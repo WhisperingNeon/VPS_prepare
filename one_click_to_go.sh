@@ -41,21 +41,21 @@ sudo systemctl enable docker
 
 # 4. 添加新用户
 echo "添加新用户"
-username="vmissss"
-password="xC6/rU7+uO6!zY"
+username="user"
+password="user_pwd"
 useradd -m -s /bin/bash -G sudo "$username"
 # 设置用户密码
 echo "$username:$password" | chpasswd
 
-# 5. 修改 SSH 端口为 22379
-echo "修改 SSH 端口为 22379..."
-sudo sed -i 's/^#Port 22/Port 22379/' /etc/ssh/sshd_config
+# 5. 修改 SSH 端口为
+echo "修改 SSH 端口为 8000"
+sudo sed -i 's/^#Port 22/Port 8000/' /etc/ssh/sshd_config
 sudo systemctl restart sshd.service
 
 # 6. 设置账户SSH 免密登录
-public_key_root="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCSmXFCOHzhxWMCahXFc+yOeOPmZOersckVy8MYAi4WPp3a0Lv3QlMg7PcR7mCmtxB/3zcmKJRf3MZ7+7jdLbKM0woOjxBgdUBf+ZgIGfukFUmYNOixY4ASwWlHs/2eMIrSfTjBXkDKOVL+WLgLeCktWr3zoKgSofWR5rFadD9QoHh/jZJa8SxX8ZNlxgcvdi1ihDxC05bI+PpAIKlBoKnBWL3fShzCBvnL1CtTg2+lrq9/3g+NuitKSb48ATayDo7jj/QMDKxHritSIxLQphKLiqZhuqZDWvMcZieLp7HT2X3OLukZP43voxzA5nXFJyR4AovI+jMXVum/vo++9G1DzjqbilH8N7DAUmo1jORrbuGdSmPx4QU2QtkErqdexoyglzOHo2A5/pFJ6cdYDtQ9BlEQoHuVHJsLyczIGWRJYRZiLVRaLW+POZ20RKgoQpcUOTcQloRWZx2OtyPuvjnAyHQKgXmWfagdracSi4NFsaCUCXAQTZHGnHqN+F0nLjU0/WpGlk8HJDqq0qL7dYNfdiZWKJTQ1wGXDqQgjFevVbw51U4kiUw/mjjK3f27Ac7FJ3zlyo/BBRrXpkx5nTSv9WRux6SW8UB5l+p3R4+52XnBDOq4csJcO1t4xzOagTsCY1lDxG9xaTGCJ8q5sXVTOmBi0fHn8+S8buv6VxMbqQ== tbw@LAPTOP-J12MDU2F"
-public_key_vmissss="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDR/lj5L+yCZaqJLSi8SCcExew+T+I4sGpUY2xs4xoir08DSHseBdrdDoon4lM+cmgpFYNeDVwlDlYut+mOR5uwc+JB+C4twyCSCTZJT3SQ7lvcgn1EnRHqfuzWJ8a5UYx7Kn4ktowmz0RUlSyBK6p/S/Z2Zges6VRptnnLk9n4ot25spTI3CKBH3DhRxMXjPsBVucHjFkBKGrrbb1z5buCofYdH15kXlqbVyH6cCWQ/tlhSei1sIohlTp7JxpRg8MSFsFfOzfOkHxBAVsrj61gvSGKgVXTL0udojVdhdqQuW6p4IyWPcziPq0Kofa1/33525JDAsARPVG/O0/9Rk0M0RXegOfZ2i8RpdmBiC+MK0q96N/UhSrAKMWIDpM/R1Ee8f1TwqO03t8FQmHEJ7FXmMHBydWXPynF8FJmlNtFybPoj0Rt9Qv3o6F/UPcdCK8CfNKxsWcpmLYP2O4HuW8qGIufpLSH9rbtXPq2KqtRFeYB7uTjKZ1AsNuBIwd4Yp5yyGTDVJRDwhwjJR9gZoqfPdpqUKz9rbJOBhHJSeKMHf3ucI5OHNnWKMmHj3D05ZI+4wFx1TDx4PkD1oEfz0GciSho6K+1rGIaDHMgTjSfvtWsLn7XXHM72UcPLPYGIGvPoeWz7cpCbxZjgnj6tzmAsFYD/FaGc4bLCSm72/qY3Q== tbw@LAPTOP-J12MDU2F"
-echo "设置 root&vmissss SSH 免密登录..."
+public_key_root="pubkey"
+public_key_user="pubkey"
+echo "设置 root&user SSH 免密登录..."
 setup_ssh_key() {
     local user=$1
     local home_dir=$2
@@ -80,8 +80,8 @@ setup_ssh_key() {
 # 为 root 用户配置免密登录
 setup_ssh_key "root" "/root" "$public_key_root"
 
-# 为 vmissss 用户配置免密登录
-setup_ssh_key "vmissss" "/home/vmissss" "$public_key_vmissss"
+# 为 user 用户配置免密登录
+setup_ssh_key "user" "/home/user" "$public_key_user"
 
 # 修改 SSH 配置文件以禁用密码登录
 echo "修改 SSH 配置以禁用密码登录..."
@@ -100,7 +100,7 @@ sudo systemctl restart sshd.service
 
 # 7. 设置 UFW 防火墙开放端口
 echo "设置 UFW 防火墙开放端口..."
-sudo ufw allow 22379/tcp    # 允许新的 SSH 端口
+sudo ufw allow 8000/tcp    # 允许新的 SSH 端口
 sudo ufw allow 80/tcp       # 允许 HTTP
 sudo ufw allow 443/tcp      # 允许 HTTPS
 sudo ufw enable
