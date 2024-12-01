@@ -38,10 +38,10 @@ fi
 
 # 5. 验证新用户创建
 echo "验证新用户创建..."
-if id -u vmissss >/dev/null 2>&1; then
-    echo "用户 vmissss 已创建。"
+if id -u user >/dev/null 2>&1; then
+    echo "用户 user 已创建。"
 else
-    echo "用户 vmissss 未创建，请检查。"
+    echo "用户 user 未创建，请检查。"
 fi
 
 # 6. 验证 SSH 配置
@@ -72,7 +72,7 @@ check_ssh_key() {
 }
 
 check_ssh_key "root" "/root"
-check_ssh_key "vmissss" "/home/vmissss"
+check_ssh_key "user" "/home/user"
 
 # 7. 验证防火墙配置
 echo "验证防火墙配置..."
