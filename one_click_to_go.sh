@@ -43,9 +43,10 @@ sudo systemctl enable docker
 echo "添加新用户"
 username="user"
 password="user_pwd"
-useradd -m -s /bin/bash -G sudo "$username"
-# 设置用户密码
-echo "$username:$password" | chpasswd
+sudo adduser --disabled-password --gecos "" "$username"
+echo "$username:$password" | sudo chpasswd
+sudo usermod -aG sudo "$username"
+
 
 # 5. 修改 SSH 端口为
 echo "修改 SSH 端口为 8000"
