@@ -43,7 +43,7 @@ sudo systemctl enable docker
 echo "添加新用户"
 username="user"
 password="user_pwd"
-sudo adduser --disabled-password --gecos "" "$username"
+sudo adduser --disabled-password --force-badname --gecos "" "$username"
 echo "$username:$password" | sudo chpasswd
 sudo usermod -aG sudo "$username"
 
